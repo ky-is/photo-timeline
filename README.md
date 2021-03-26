@@ -1,7 +1,7 @@
 # photo-timeline
 
 ## Setup
-1. Fork repo
+1. [Create a repo from this template](https://github.com/ky-is/photo-timeline/generate)
 2. [Deploy to Netlify](https://app.netlify.com/start) Publish directory: `site/.vitepress/dist`
 3. [Enable Netlify Identity and Git Gateway](https://www.netlifycms.org/docs/add-to-your-site/#enable-identity-and-git-gateway)
 4. [Install Netlify CLI and login](https://docs.netlify.com/cli/get-started/#installation)
