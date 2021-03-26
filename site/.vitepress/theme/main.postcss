@@ -1,0 +1,55 @@
+@import "tailwindcss/base";
+
+@import "tailwindcss/components";
+
+@import "tailwindcss/utilities";
+
+button, input {
+	@apply outline-none !important;
+}
+
+a, button, input, .control-content {
+	transition: background 250ms, color 250ms;
+}
+
+button {
+	@apply inline-block bg-gray-400 text-white;
+}
+.button-outline {
+	@apply px-1 border border-gray-400 rounded text-center font-medium;
+}
+.button-outline:hover {
+	@apply bg-gray-400 text-white font-semibold;
+}
+.button-pill {
+	@apply px-3 py-0.5 bg-transparent rounded-full border-2 border-gray-400 text-center text-gray-400 font-semibold;
+}
+.button-pill.selected {
+	@apply bg-gray-400 border-gray-400 text-white;
+}
+button.big {
+	@apply px-6 h-14 rounded-xl text-3xl font-semibold;
+	min-width: 160px;
+}
+button:hover, .button-pill:hover {
+	@apply bg-gray-300;
+}
+button:hover:active {
+	@apply bg-gray-200;
+}
+.button-pill:not(.selected):hover:active {
+	@apply bg-gray-400 text-white;
+}
+button:disabled {
+	@apply bg-gray-200 cursor-default;
+}
+
+.button-outline.highlight {
+	@apply border-yellow-600 text-yellow-600;
+}
+.button-outline.highlight:hover {
+	@apply bg-yellow-500 text-white;
+}
+.button-outline.highlight:hover:active {
+	@apply bg-yellow-400;
+}

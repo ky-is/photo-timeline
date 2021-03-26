@@ -1,0 +1,56 @@
+backend:
+  name: git-gateway
+  # name: test-repo #SAMPLE
+  branch: main
+  squash_merges: true
+
+media_folder: "site/public/photos"
+public_folder: "/photos"
+
+collections:
+  - label: "Event"
+    name: event
+    folder: "site/events"
+    identifier_field: title
+    fields:
+      - { label: "Title", name: "title", widget: "string", hint: "Use Title Case." }
+      - { label: "Date start", name: "date_start", widget: "datetime", time_format: false }
+      - { label: "Date end", name: "date_end", widget: "datetime", time_format: false, default: "", required: false, hint: "Only use if the event should span multiple days." }
+      - { label: "Inexact date", name: "inexact_date", widget: "boolean", required: false, hint: "Hides the day number if you aren't sure this date is correct." }
+      - { label: "Major", name: "major", widget: "boolean", default: false, hint: "Major events are highlighted on the timeline and should be used sparingly." }
+      - { label: "Unphotographed people", name: "subjects", widget: "relation", collection: "person", multiple: true, value_field: "name", search_fields: ["name"], required: false, hint: "Additional people in attendance who do not appear in any of the photos for this event." }
+      - { label: "Description", name: "body", widget: "markdown", required: false }
+    slug: "{{slug}}"
+    create: true
+    editor:
+      preview: false
+  - label: "Photo"
+    name: photo
+    folder: "site/photos"
+    identifier_field: title
+    fields:
+      - { label: "Title", name: "title", widget: "string", hint: "Use sentence case. Must be unique across all photos." }
+      - { label: "Image", name: "image", widget: "image" }
+      - { label: "Event", name: "event", widget: "relation", collection: "event", value_field: "title", search_fields: ["title"], display_fields: ["title", "date_start"], required: false, hint: "Events are photos that are grouped and highlighted on the timeline. Create a new Event first if it doesn't exist." }
+      - { label: "Photographer", name: "photographer", widget: "relation", collection: "person", value_field: "name", search_fields: ["name"], required: false, hint: "There must be an existing Person entry for the name you wish to enter." }
+      - { label: "People in Photo", name: "subjects", widget: "relation", collection: "person", multiple: true, value_field: "name", search_fields: ["name"], required: false, hint: "There must be an existing Person entry for each name you wish to enter." }
+      - { label: "Description", name: "body", widget: "markdown", required: false }
+      - { label: "Date", name: "date", widget: "datetime", time_format: false, default: "", required: false, hint: "¡Only supply if the image's metadata is incorrect and needs to be overriden!" }
+      - { label: "Inexact date", name: "inexact_date", widget: "boolean", required: false, hint: "Hides the day number if you aren't sure this date is correct." }
+      - { label: "Location", name: "location", widget: "map", required: false, hint: "¡Only supply if the image's metadata is incorrect and needs to be overriden!" }
+    slug: "{{slug}}"
+    create: true
+    editor:
+      preview: false
+  - label: "Person"
+    name: person
+    folder: "site/people"
+    identifier_field: name
+    fields:
+      - { label: "Name", name: "name", widget: "string"}
+      - { label: "Nicknames", name: "nicknames", widget: "list", collapsed: true, label_singular: "nickname", summary: "{{nickname}}", required: false, field: { label: Nickname, name: nickname, widget: "string" } }
+      - { label: "Birthdate", name: "date_birth", widget: "datetime", time_format: false, default: "", required: false }
+    slug: "{{slug}}"
+    create: true
+    editor:
+      preview: false

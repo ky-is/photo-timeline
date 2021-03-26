@@ -1,0 +1,22 @@
+{
+	"compilerOptions": {
+		"target": "esnext",
+		"module": "esnext",
+		"moduleResolution": "node",
+		"strict": true,
+		"sourceMap": true,
+		"resolveJsonModule": false,
+		"esModuleInterop": true,
+		"lib": ["esnext", "dom"],
+		"types": ["vite/client", "node"],
+		"allowJs": true,
+		"checkJs": true,
+	},
+	"include": [
+		".vitepress/**/*.ts",
+		".vitepress/**/*.vue",
+	],
+	"exclude": [
+		".vitepress/config.js",
+	],
+}
