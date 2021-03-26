@@ -4,6 +4,9 @@ const matter = require('gray-matter')
 
 function getCollectionMatterByFile(name) {
 	const postDir = path.resolve(__dirname, `../${name}`)
+	if (!fs.existsSync(postDir)) {
+		return []
+	}
 	return fs
 		.readdirSync(postDir)
 		.map(file => {
