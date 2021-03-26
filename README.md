@@ -18,4 +18,4 @@ netlify lm:setup
 ```
 7. Replace all instances of `photo-timeline` with your branding
 8. Commit and deploy!
-6. Add content via CMS: https://YOUR_APP_NAME.netlify.app/admin/private/#/ (rename the `/admin/private/` directory to prevent access to your admin page if you allow open registration in Netlify Identity)
+6. Add content via CMS: https://YOUR_APP_NAME.netlify.app/admin/private/#/ (rename the `/admin/private/` directory and update `auth.js` to prevent access to your admin page if you allow open registration in Netlify Identity)
