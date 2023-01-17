@@ -31,8 +31,8 @@
 </template>
 
 <script setup lang="ts">
-import { useSiteData } from 'vitepress'
 import { defineProps, ref } from 'vue'
+import { useData } from 'vitepress'
 
 import type { EventData, PersonData, PhotoData } from '../../collections'
 import Date from '../components/Date.vue'
@@ -40,6 +40,8 @@ import Person from '../components/Person.vue'
 import Photo from '../components/Photo.vue'
 
 import { selectPhoto } from '../../useSelectedPhoto'
+
+const { theme } = useData()
 
 const props = defineProps<{
 	photo: PhotoData
@@ -53,13 +55,13 @@ function onHover(hovering: boolean) {
 	hoveringInfo.value = hovering
 }
 
-const people: PersonData[] = useSiteData().value.customData.people
 const event = function () {
 	const photoTitle = props.photo.title
-	const events: EventData[] = useSiteData().value.customData.events
+	const events = theme.value.events as EventData[]
 	return events.find(event => event.title === photoTitle)
 }()
 
+const people = theme.value.people as PersonData[]
 const photographer = props.photo?.photographer ? people.find(person => person.name === props.photo.photographer) : null
 const subjects = props.photo?.subjects
 	.map(name => people.find(person => person.name === name))

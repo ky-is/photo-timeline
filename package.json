@@ -3,6 +3,7 @@
 	"author": "Kyle Coburn",
 	"version": "0.1.0",
 	"license": "ISC",
+	"type": "module",
 	"scripts": {
 		"git:pull": "git pull",
 		"dev": "vitepress dev site",
@@ -10,39 +11,47 @@
 		"serve": "vitepress serve site"
 	},
 	"dependencies": {
-		"@tailwindcss/jit": "^0.1.18",
 		"gray-matter": "^4.0.3",
-		"postcss": "^8.2.15",
-		"tailwindcss": "^2.1.2",
-		"vitepress": "^0.13.2"
+		"postcss": "^8.4.21",
+		"tailwindcss": "^3.2.4",
+		"vitepress": "1.0.0-alpha.36"
 	},
 	"devDependencies": {
-		"@ky-is/eslint-config": "^2.3.1",
-		"@types/node": "^14.14.44",
-		"@typescript-eslint/eslint-plugin": "^4.23.0",
-		"@typescript-eslint/parser": "^4.23.0",
-		"@vue/eslint-config-typescript": "^7.0.0",
-		"@vuedx/typecheck": "^0.6.3",
-		"@vuedx/typescript-plugin-vue": "^0.6.3",
-		"autoprefixer": "^10.2.5",
-		"eslint": "^7.26.0",
-		"eslint-plugin-vue": "^7.9.0",
-		"typescript": "^4.2.4",
-		"vite": "^2.2.4",
-		"vue": "^3.0.11"
+		"@ky-is/eslint-config": "^2.5.1",
+		"@types/node": "^14.18.36",
+		"@typescript-eslint/eslint-plugin": "^5.48.2",
+		"@typescript-eslint/parser": "^5.48.2",
+		"@vue/eslint-config-typescript": "^11.0.2",
+		"@vuedx/typecheck": "^0.7.6",
+		"@vuedx/typescript-plugin-vue": "^0.7.6",
+		"autoprefixer": "^10.4.13",
+		"eslint": "^8.32.0",
+		"eslint-plugin-vue": "^9.9.0",
+		"typescript": "^4.9.4",
+		"vite": "^4.0.4",
+		"vue": "^3.2.45"
 	},
 	"eslintConfig": {
 		"extends": "@ky-is/eslint-config/vue-typescript",
-		"rules": {}
+		"parserOptions": {
+			"sourceType": "module",
+			"project": [
+				"tsconfig.eslint.json"
+			]
+		},
+		"rules": {
+			"vue/multi-word-component-names": "off"
+		}
 	},
 	"eslintIgnore": [
 		"!.vitepress"
 	],
 	"postcss": {
 		"plugins": {
-			"@tailwindcss/jit": {
-				"config": "site/tailwind.config.js"
-			}
+			"tailwindcss": {
+				"config": "site/tailwind.config.ts"
+			},
+			"autoprefixer": {}
 		}
 	}
 }

@@ -18,13 +18,15 @@
 </template>
 
 <script setup lang="ts">
-import { useSiteData } from 'vitepress'
 import { computed, defineProps, ref } from 'vue'
+import { useData } from 'vitepress'
 
 import type { EventData, PersonData, PhotoData } from '../../collections'
 import Date from '../components/Date.vue'
 import EventLink from '../components/EventLink.vue'
 import PhotoGrid from '../components/PhotoGrid.vue'
+
+const { theme } = useData()
 
 const props = defineProps<{
 	person: PersonData
@@ -38,8 +40,8 @@ function onHover(event: EventData | null) {
 
 const events = function () {
 	const personName = props.person.name
-	const events: EventData[] = useSiteData().value.customData.events
-	const photos: PhotoData[] = useSiteData().value.customData.photos
+	const events = theme.value.events as EventData[]
+	const photos = theme.value.photos as PhotoData[]
 	const eventsFromPhotos = photos
 		.filter(photo => photo.event && (photo.photographer === personName || photo.subjects.includes(personName)))
 		.map(photo => events.find(event => event.title === photo.event))
@@ -50,7 +52,7 @@ const events = function () {
 
 const photos = function () {
 	const personName = props.person.name
-	const photos: PhotoData[] = useSiteData().value.customData.photos
+	const photos = theme.value.photos as PhotoData[]
 	return personName ? photos.filter(photo => photo.subjects.includes(personName)) : []
 }()
 

@@ -1,0 +1,12 @@
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"paths": {
+			"#/*": ["./site/.vitepress/*"],
+		},
+	},
+	"include": [
+		"./site/.vitepress/**/*.ts",
+		"./site/.vitepress/**/*.vue",
+	],
+}

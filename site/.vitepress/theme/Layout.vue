@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useRoute, useSiteData } from 'vitepress'
+import { useData, useRoute } from 'vitepress'
 
 import Home from './Home.vue'
 
@@ -28,6 +28,7 @@ import { useSelectedPhoto } from '../useSelectedPhoto'
 
 const selectedPhoto = useSelectedPhoto()
 
+const { theme } = useData()
 const route = useRoute()
 const routePath = useRoutePath(route)
 const collection = computed(() => routePath.value[0])
@@ -40,7 +41,7 @@ const selectedEntry = computed(() => {
 	if (collectionName[0] === '_') {
 		collectionName = collectionName.slice(1)
 	}
-	const entries: CollectionData[] = useSiteData().value.customData[collectionName]
+	const entries: CollectionData[] = theme.value[collectionName]
 	if (!entries) {
 		console.error('Invalid CV', collectionName)
 		return undefined

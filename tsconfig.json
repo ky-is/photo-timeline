@@ -13,10 +13,7 @@
 		"checkJs": true,
 	},
 	"include": [
-		".vitepress/**/*.ts",
-		".vitepress/**/*.vue",
-	],
-	"exclude": [
-		".vitepress/config.js",
+		"./site/.vitepress/**/*.ts",
+		"./site/.vitepress/**/*.vue",
 	],
 }

@@ -1,5 +1,5 @@
 import { computed, ref } from 'vue'
-import { useSiteData } from 'vitepress'
+import { useData } from 'vitepress'
 
 import type { CollectionData, PhotoData } from './collections'
 
@@ -36,7 +36,7 @@ export function useSelectedPhoto() {
 			return undefined
 		}
 		const hashPhotoHREF = toHREF(href.value.slice(1), 'photos')
-		const photos: PhotoData[] = useSiteData().value.customData.photos
+		const photos = useData().theme.value.customData.photos as PhotoData[]
 		return photos.find(photo => photo.href === hashPhotoHREF)
 	})
 }

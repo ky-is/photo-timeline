@@ -4,14 +4,14 @@
 		<div class="-mt-1.5 text-gray-600">
 			<div v-for="[ year, photosByMonth ] in photosByYearAndMonth" :key="year" class="mt-1 relative border-l-2 sm:border-l-3 border-yellow-500" :class="!photosByMonth ? 'h-13 border-dashed' : null">
 				<h2 class="header-timeline  bottom-full -mb-1 text-2xl sm:text-3xl text-gray-700 font-light">{{ year }}</h2>
-				<div v-for="[month, [events, photos]] in photosByMonth" :key="month" class="relative" :style="{ height: thumbnailSize }">
+				<div v-for="[month, [monthEvents, eventPhotos]] in photosByMonth" :key="month" class="relative" :style="{ height: thumbnailSize }">
 					<h3 class="header-timeline  -mt-0.5 text-sm">{{ monthNames[month] }}</h3>
 					<div class="h-full ml-0.5 sm:ml-1  flex">
 						<div class="overflow-x-auto flex items-center space-x-0.5">
-							<div v-if="events.length" class="flex-shrink-0  h-full overflow-y-auto" :style="{ maxWidth: thumbnailSize }">
-								<EventLink v-for="event in events" :key="event.title" :event="event" @hover="onHover" />
+							<div v-if="monthEvents.length" class="flex-shrink-0  h-full overflow-y-auto" :style="{ maxWidth: thumbnailSize }">
+								<EventLink v-for="event in monthEvents" :key="event.title" :event="event" @hover="onHover" />
 							</div>
-							<template v-for="photo in photos" :key="photo.title">
+							<template v-for="photo in eventPhotos" :key="photo.title">
 								<PhotoThumbnail v-if="photo.date && (!filterEvent || photo.event === filterEvent.title || filterEvent.dateStart.year !== year || filterEvent.dateStart.month !== month)"
 									:photo="photo"
 									class="flex-shrink-0" :style="{ width: thumbnailSize }"
@@ -34,12 +34,14 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { useSiteData } from 'vitepress'
+import { useData } from 'vitepress'
 
 import EventLink from './components/EventLink.vue'
 import PhotoThumbnail from './components/PhotoThumbnail.vue'
 
 import type { EventData, PhotoData } from '../collections'
+
+const { theme } = useData()
 
 const monthNames = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ]
 
@@ -69,8 +71,6 @@ function onHover(event: EventData | null) {
 }
 
 // Timeline entries
-const photos = useSiteData().value.customData.photos
-const events = useSiteData().value.customData.events
 
 function groupPhotosObject<Content>(photosObject: {[key: string]: Content}) {
 	return Object.entries(photosObject)
@@ -80,6 +80,8 @@ function groupPhotosObject<Content>(photosObject: {[key: string]: Content}) {
 
 const photosByYearAndMonth = computed(() => {
 	const resultsObject: {[year: number]: {[month: number]: [EventData[], PhotoData[]]}} = {}
+	const photos = theme.value.photos as PhotoData[]
+	const events = theme.value.events as EventData[]
 	for (const photo of photos) {
 		if (photo.date) {
 			let resultsYear = resultsObject[photo.date.year]

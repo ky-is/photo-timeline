@@ -1,14 +1,16 @@
-const fs = require('fs')
-const path = require('path')
-const matter = require('gray-matter')
+import fs from 'fs'
+import path from 'path'
+import matter from 'gray-matter'
+import type { DateData, EventData, PersonData, PhotoData } from './collections.js'
 
-function getCollectionMatterByFile(name) {
-	const postDir = path.resolve(__dirname, `../${name}`)
+function getCollectionMatterByFile(name: string) {
+	// console.log(name) //SAMPLE
+	const postDir = path.resolve(`../${name}`)
 	if (!fs.existsSync(postDir)) {
 		return []
 	}
-	return fs
-		.readdirSync(postDir)
+	return fs.
+		readdirSync(postDir)
 		.map(file => {
 			const filePath = path.join(postDir, file)
 			const src = fs.readFileSync(filePath, 'utf-8')
@@ -18,7 +20,7 @@ function getCollectionMatterByFile(name) {
 		})
 }
 
-exports.getEvents = () => {
+export function getEvents() {
 	return getCollectionMatterByFile('events')
 		.map(({ href, data }) => {
 			return {
@@ -28,25 +30,25 @@ exports.getEvents = () => {
 				dateStart: formatDate(data.date_start, data.inexact_date),
 				dateEnd: formatDate(data.date_end, data.inexact_date),
 				additionalAttendees: data.subjects || [],
-			}
+			} as EventData
 		})
-		.sort((a, b) => b.dateStart.time - a.dateStart.time)
+		.sort((a, b) => b.dateStart!.time - a.dateStart!.time)
 }
 
-exports.getPeople = () => {
+export function getPeople() {
 	return getCollectionMatterByFile('people')
 		.map(({ href, data }) => {
 			return {
 				href,
 				name: data.name,
 				nicknames: data.nicknames,
-				dateBirth: formatDate(data.date_birth),
-			}
+				dateBirth: formatDate(data.date_birth, false),
+			} as PersonData
 		})
 		.sort((a, b) => (b.dateBirth ? b.dateBirth.time : 0) - (a.dateBirth ? a.dateBirth.time : 0))
 }
 
-exports.getPhotos = () => {
+export function getPhotos() {
 	const events = getCollectionMatterByFile('events') //TODO dedup
 	return getCollectionMatterByFile('photos')
 		.map(({ href, data }) => {
@@ -67,20 +69,20 @@ exports.getPhotos = () => {
 				description: data.description,
 				date: formatDate(date, data.inexact_date),
 				location: formatLocation(data.location),
-			}
+			} as PhotoData
 		})
 		.sort((a, b) => (b.date ? b.date.time : 0) - (a.date ? a.date.time : 0))
 }
 
-function formatLocation(locationString) {
-	return locationString ? JSON.parse(locationString).coordinates : null
+function formatLocation(location: string) {
+	return location ? JSON.parse(location).coordinates : null
 }
 
-function formatName(fileName) {
+function formatName(fileName: string) {
 	return fileName.replace(/\.md$/, '.html')
 }
 
-function formatDate(date, inexact) {
+function formatDate(date: any, inexact: boolean): DateData | null {
 	if (!date) {
 		return null
 	}

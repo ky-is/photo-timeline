@@ -1,2 +1,3 @@
 .netlify
-site/.vitepress/dist
+**/.vitepress/dist
+**/.vitepress/cache

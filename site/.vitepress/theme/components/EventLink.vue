@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineEmit, defineProps } from 'vue'
+import { defineEmits, defineProps } from 'vue'
 
 import type { EventData } from '../../collections'
 
@@ -15,7 +15,7 @@ defineProps<{
 	event: EventData
 }>()
 
-const emit = defineEmit<(name: 'hover', event: EventData | null) => void>()
+const emit = defineEmits<(name: 'hover', event: EventData | null) => void>()
 
 function onHover(event: EventData | null) {
 	emit('hover', event)

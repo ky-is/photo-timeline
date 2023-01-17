@@ -14,13 +14,15 @@
 </template>
 
 <script setup lang="ts">
-import { useSiteData } from 'vitepress'
 import { computed, defineProps } from 'vue'
+import { useData } from 'vitepress'
 
 import type { EventData, PersonData, PhotoData } from '../../collections'
 import Date from '../components/Date.vue'
 import Person from '../components/Person.vue'
 import PhotoGrid from '../components/PhotoGrid.vue'
+
+const { theme } = useData()
 
 const props = defineProps<{
 	event: EventData
@@ -31,7 +33,7 @@ const photos = computed(() => {
 	if (!eventName) {
 		return []
 	}
-	const photos: PhotoData[] = useSiteData().value.customData.photos
+	const photos = theme.value.photos as PhotoData[]
 	return photos.filter(photo => photo.event === eventName)
 })
 
@@ -40,7 +42,7 @@ const attendees = computed(() => {
 	if (!eventName) {
 		return []
 	}
-	const people: PersonData[] = useSiteData().value.customData.people
+	const people = theme.value.people as PersonData[]
 	const namesInEventPhotos = photos.value.flatMap(photo => (photo.photographer ? [ ...photo.subjects, photo.photographer ] : photo.subjects))
 	return Array.from(new Set(namesInEventPhotos.concat(props.event.additionalAttendees)))
 		.map(name => people.find(person => person.name === name))
