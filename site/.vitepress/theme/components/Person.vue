@@ -1,8 +1,8 @@
 <template>
-	<span class="inline-block">
-		<a :href="person.href">{{ person.name }}</a>
-		<span v-if="age" class="text-sm text-gray-500"> ({{ age }})</span>
-	</span>&ensp;
+<span class="inline-block">
+	<a :href="person.href">{{ person.name }}</a>
+	<span v-if="age" class="text-sm text-gray-500"> ({{ age }})</span>
+</span>&ensp;
 </template>
 
 <script setup lang="ts">

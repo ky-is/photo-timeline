@@ -29,7 +29,7 @@ export function getEvents() {
 				major: data.major,
 				dateStart: formatDate(data.date_start, data.inexact_date),
 				dateEnd: formatDate(data.date_end, data.inexact_date),
-				additionalAttendees: data.subjects || [],
+				additionalAttendees: data.subjects ?? [],
 			} as EventData
 		})
 		.sort((a, b) => b.dateStart!.time - a.dateStart!.time)
@@ -49,11 +49,11 @@ export function getPeople() {
 }
 
 export function getPhotos() {
-	const events = getCollectionMatterByFile('events') //TODO dedup
+	const events = getCollectionMatterByFile('events') //TODO dedupe
 	return getCollectionMatterByFile('photos')
 		.map(({ href, data }) => {
 			let date = data.date
-			if (!date) {
+			if (date == null || date == '') {
 				const photoEventObject = events.find(eventObject => eventObject.data.title === data.event)
 				if (photoEventObject) {
 					date = photoEventObject.data.date_start
@@ -82,8 +82,8 @@ function formatName(fileName: string) {
 	return fileName.replace(/\.md$/, '.html')
 }
 
-function formatDate(date: any, inexact: boolean): DateData | null {
-	if (!date) {
+function formatDate(date: Date | string | undefined, inexact: boolean): DateData | null {
+	if (date == null || date == '') {
 		return null
 	}
 	if (!(date instanceof Date)) {

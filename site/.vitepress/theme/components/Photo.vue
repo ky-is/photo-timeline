@@ -1,5 +1,5 @@
 <template>
-	<img :src="baseURL + photo.image + `?nf_resize=${resize}&w=${maxDimension}&h=${maxDimension}`" :class="thumbnail ? 'rounded-sm' : 'object-contain'">
+<img :src="baseURL + photo.image + `?nf_resize=${resize}&w=${maxDimension}&h=${maxDimension}`" :class="thumbnail ? 'rounded-sm' : 'object-contain'">
 </template>
 
 <script setup lang="ts">

@@ -1,7 +1,7 @@
 <template>
-	<button type="button" @click="selectPhoto(photo)">
-		<Photo :photo="photo" size="thumbnail" />
-	</button>
+<button type="button" @click="selectPhoto(photo)">
+	<Photo :photo="photo" size="thumbnail" />
+</button>
 </template>
 
 <script setup lang="ts">

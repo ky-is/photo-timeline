@@ -1,35 +1,36 @@
 <template>
-	<div class="mt-16 sm:mt-26 mb-26 ml-16 sm:ml-32">
-		<h1 class="inline text-yellow-500 font-thin leading-none">photo-timeline</h1>
-		<div class="-mt-1.5 text-gray-600">
-			<div v-for="[ year, photosByMonth ] in photosByYearAndMonth" :key="year" class="mt-1 relative border-l-2 sm:border-l-3 border-yellow-500" :class="!photosByMonth ? 'h-13 border-dashed' : null">
-				<h2 class="header-timeline  bottom-full -mb-1 text-2xl sm:text-3xl text-gray-700 font-light">{{ year }}</h2>
-				<div v-for="[month, [monthEvents, eventPhotos]] in photosByMonth" :key="month" class="relative" :style="{ height: thumbnailSize }">
-					<h3 class="header-timeline  -mt-0.5 text-sm">{{ monthNames[month] }}</h3>
-					<div class="h-full ml-0.5 sm:ml-1  flex">
-						<div class="overflow-x-auto flex items-center space-x-0.5">
-							<div v-if="monthEvents.length" class="flex-shrink-0  h-full overflow-y-auto" :style="{ maxWidth: thumbnailSize }">
-								<EventLink v-for="event in monthEvents" :key="event.title" :event="event" @hover="onHover" />
-							</div>
-							<template v-for="photo in eventPhotos" :key="photo.title">
-								<PhotoThumbnail v-if="photo.date && (!filterEvent || photo.event === filterEvent.title || filterEvent.dateStart.year !== year || filterEvent.dateStart.month !== month)"
-									:photo="photo"
-									class="flex-shrink-0" :style="{ width: thumbnailSize }"
-								/>
-							</template>
-							<div class="flex-shrink-0  w-5 h-px" />
-							<!-- <a v-if="filterPerson" :href="`/people/${filterPerson.name}`">See all photos with {{ filterPerson.name }}</a> -->
+<div class="mt-16 sm:mt-26 mb-26 ml-16 sm:ml-32">
+	<h1 class="inline text-yellow-500 font-thin leading-none">photo-timeline</h1>
+	<div class="-mt-1.5 text-gray-600">
+		<div v-for="[ year, photosByMonth ] in photosByYearAndMonth" :key="year" class="mt-1 relative border-l-2 sm:border-l-3 border-yellow-500" :class="!photosByMonth ? 'h-13 border-dashed' : null">
+			<h2 class="header-timeline  bottom-full -mb-1 text-2xl sm:text-3xl text-gray-700 font-light">{{ year }}</h2>
+			<div v-for="[month, [monthEvents, eventPhotos]] in photosByMonth" :key="month" class="relative" :style="{ height: thumbnailSize }">
+				<h3 class="header-timeline  -mt-0.5 text-sm">{{ monthNames[month] }}</h3>
+				<div class="h-full ml-0.5 sm:ml-1  flex">
+					<div class="overflow-x-auto flex items-center space-x-0.5">
+						<div v-if="monthEvents.length" class="flex-shrink-0  h-full overflow-y-auto" :style="{ maxWidth: thumbnailSize }">
+							<EventLink v-for="event in monthEvents" :key="event.title" :event="event" @hover="onHover" />
 						</div>
-						<div class="scroll-cap  absolute top-0 right-0 z-10 w-32 h-full pointer-events-none" />
+						<template v-for="photo in eventPhotos" :key="photo.title">
+							<PhotoThumbnail
+								v-if="photo.date && (!filterEvent || photo.event === filterEvent.title || filterEvent.dateStart.year !== year || filterEvent.dateStart.month !== month)"
+								:photo="photo"
+								class="flex-shrink-0" :style="{ width: thumbnailSize }"
+							/>
+						</template>
+						<div class="flex-shrink-0  w-5 h-px" />
+						<!-- <a v-if="filterPerson" :href="`/people/${filterPerson.name}`">See all photos with {{ filterPerson.name }}</a> -->
 					</div>
+					<div class="scroll-cap  absolute top-0 right-0 z-10 w-32 h-full pointer-events-none" />
 				</div>
 			</div>
-			<div class="fixed right-0 bottom-0 z-20 m-3 space-y-1">
-				<button type="button" class="zoom-button" :disabled="zoomSize >= zoomRange[1]" @click="onZoom(1)">＋</button>
-				<button type="button" class="zoom-button" :disabled="zoomSize <= zoomRange[0]" @click="onZoom(-1)">－</button>
-			</div>
+		</div>
+		<div class="fixed right-0 bottom-0 z-20 m-3 space-y-1">
+			<button type="button" class="zoom-button" :disabled="zoomSize >= zoomRange[1]" @click="onZoom(1)">＋</button>
+			<button type="button" class="zoom-button" :disabled="zoomSize <= zoomRange[0]" @click="onZoom(-1)">－</button>
 		</div>
 	</div>
+</div>
 </template>
 
 <script setup lang="ts">
@@ -85,12 +86,12 @@ const photosByYearAndMonth = computed(() => {
 	for (const photo of photos) {
 		if (photo.date) {
 			let resultsYear = resultsObject[photo.date.year]
-			if (!resultsYear) {
+			if (resultsYear == null) {
 				resultsYear = {}
 				resultsObject[photo.date.year] = resultsYear
 			}
 			let resultsMonth = resultsYear[photo.date.month]
-			if (!resultsMonth) {
+			if (resultsMonth == null) {
 				resultsMonth = [[], []]
 				resultsYear[photo.date.month] = resultsMonth
 			}
@@ -98,22 +99,22 @@ const photosByYearAndMonth = computed(() => {
 		}
 	}
 	for (const event of events) {
-		let resultsYear = resultsObject[event.dateStart.year]
-		if (!resultsYear) {
+		let resultsYear = resultsObject[event.dateStart!.year]
+		if (resultsYear == null) {
 			resultsYear = {}
-			resultsObject[event.dateStart.year] = resultsYear
+			resultsObject[event.dateStart!.year] = resultsYear
 		}
-		let resultsMonth = resultsYear[event.dateStart.month]
-		if (!resultsMonth) {
+		let resultsMonth = resultsYear[event.dateStart!.month]
+		if (resultsMonth == null) {
 			resultsMonth = [[], []]
-			resultsYear[event.dateStart.month] = resultsMonth
+			resultsYear[event.dateStart!.month] = resultsMonth
 		}
 		resultsMonth[0].push(event)
 	}
 	const resultsArray = groupPhotosObject(resultsObject)
 		.map(([year, photosByMonth]) => [ year, groupPhotosObject(photosByMonth) ] as [year: number | undefined, photosByMonth: [month: number, photos: [EventData[], PhotoData[]]][] | undefined])
 	const firstYear = resultsArray[0]?.[0]
-	if (!firstYear) {
+	if (firstYear == null) {
 		return resultsArray
 	}
 	for (let yearIndex = resultsArray.length - 1; yearIndex >= 0; yearIndex -= 1) {

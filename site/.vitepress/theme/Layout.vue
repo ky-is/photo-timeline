@@ -1,15 +1,15 @@
 <template>
-	<div class="antialiased">
-		<main class="mx-auto" :class="collection === 'photos' ? null : 'container'">
-			<Home v-if="!collection" />
-			<template v-if="selectedEntry">
-				<EventPage v-if="collection === 'events'" :event="selectedEntry" />
-				<PersonPage v-else-if="collection === 'people'" :person="selectedEntry" />
-				<PhotoPage v-else-if="collection === 'photos'" :photo="selectedEntry" />
-			</template>
-			<PhotoPage v-if="selectedPhoto" :photo="selectedPhoto" />
-		</main>
-	</div>
+<div class="antialiased">
+	<main class="mx-auto" :class="collection === 'photos' ? null : 'container'">
+		<Home v-if="!collection" />
+		<template v-if="selectedEntry">
+			<EventPage v-if="collection === 'events'" :event="selectedEntry" />
+			<PersonPage v-else-if="collection === 'people'" :person="selectedEntry" />
+			<PhotoPage v-else-if="collection === 'photos'" :photo="selectedEntry" />
+		</template>
+		<PhotoPage v-if="selectedPhoto" :photo="selectedPhoto" />
+	</main>
+</div>
 </template>
 
 <script setup lang="ts">
@@ -34,6 +34,7 @@ const routePath = useRoutePath(route)
 const collection = computed(() => routePath.value[0])
 
 const selectedEntry = computed(() => {
+	// return undefined //TODO
 	let collectionName = collection.value
 	if (!collectionName) {
 		return undefined
@@ -41,7 +42,7 @@ const selectedEntry = computed(() => {
 	if (collectionName[0] === '_') {
 		collectionName = collectionName.slice(1)
 	}
-	const entries: CollectionData[] = theme.value[collectionName]
+	const entries: CollectionData[] | undefined = theme.value[collectionName]
 	if (!entries) {
 		console.error('Invalid CV', collectionName)
 		return undefined

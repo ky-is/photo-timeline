@@ -13,7 +13,12 @@
 		"checkJs": true,
 	},
 	"include": [
-		"./site/.vitepress/**/*.ts",
-		"./site/.vitepress/**/*.vue",
+		"./site/**/*",
+		"./site/.vitepress/**/*",
+	],
+	"exclude": [
+		"./site/.vitepress/cache/**/*",
+		"./site/.vitepress/dist/**/*",
+		"./site/public/**/*",
 	],
 }

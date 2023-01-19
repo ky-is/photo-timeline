@@ -1,7 +1,9 @@
-if (window.netlifyIdentity) {
-	window.netlifyIdentity.on('init', user => {
-		if (!user) {
-			window.netlifyIdentity.on('login', () => {
+const netlifyIdentity = window.netlifyIdentity
+
+if (netlifyIdentity != null) {
+	netlifyIdentity.on('init', user => {
+		if (user != null) {
+			netlifyIdentity.on('login', () => {
 				document.location.href = '/admin/private'
 			})
 		}

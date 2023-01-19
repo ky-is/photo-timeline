@@ -1,9 +1,9 @@
 <template>
-	<a
-		:href="event.href"
-		class="button-outline inline-block text-sm" :class="{ highlight: event.major }"
-		@mouseover="onHover(event)" @mouseout="onHover(null)"
-	>{{ event.title }}</a>
+<a
+	:href="event.href"
+	class="button-outline inline-block text-sm" :class="{ highlight: event.major }"
+	@mouseover="onHover(event)" @mouseout="onHover(null)"
+>{{ event.title }}</a>
 </template>
 
 <script setup lang="ts">

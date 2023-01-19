@@ -6,7 +6,7 @@
 		},
 	},
 	"include": [
-		"./site/.vitepress/**/*.ts",
-		"./site/.vitepress/**/*.vue",
+		"./site/**/*",
+		"./site/.vitepress/**/*",
 	],
 }
