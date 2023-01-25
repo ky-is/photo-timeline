@@ -1,27 +1,25 @@
-/* global CMS, exifr */
+/* globals CMS, exifr */
 
 async function updatePhotoMetadataIfNeededFor({ entry }) {
-	const collectionName = entry.get('collection')
+	// console.log(entry) //SAMPLE
 
-	if (collectionName === 'person') {
-		const birthDate = entry.get('data').get('date_birth')
+	if (entry.collection === 'person') {
+		const birthDate = entry.data.date_birth
 		if (birthDate) {
-			return entry.get('data').set('date_birth', birthDate.toISOString().split('T')[0] + 'T00:00:00')
+			entry.data.date_birth = birthDate.toISOString().split('T')[0] + 'T00:00:00'
 		}
-	}
-
-	if (collectionName === 'photo') {
-		const data = entry.get('data')
-		const originalDateString = data.get('date') ? data.get('date').toISOString() : null
+	} else if (entry.collection === 'photo') {
+		const data = entry.data
+		const originalDateString = data.date ? data.date.toISOString() : null
 		let newDateString = originalDateString
-		let dataLocationString = data.get('location')
+		let dataLocationString = data.location
 		const needsDate = !originalDateString
 		const needsLocation = !dataLocationString
-		const imagePath = data.get('image')
-		const mediaFiles = entry.get('mediaFiles')
+		const imagePath = data.image
+		const mediaFiles = entry.mediaFiles
 		for (const mediaFile of mediaFiles) {
-			if (mediaFile.get('path').replace('site/public/', '/') === imagePath) {
-				const response = await fetch(mediaFile.get('url'))
+			if (mediaFile.path.replace('site/public/', '/') === imagePath) {
+				const response = await fetch(mediaFile.url)
 				const imageBuffer = await response.blob()
 				const exif = await exifr.parse(imageBuffer)
 				if (needsDate) {
@@ -36,7 +34,7 @@ async function updatePhotoMetadataIfNeededFor({ entry }) {
 				break
 			}
 		}
-		if (newDateString !== originalDateString && entry.get('newRecord')) {
+		if (newDateString !== originalDateString && entry.newRecord) {
 			const resultDateString = window.prompt('Found a new date from the photo metadata. Modify if needed, and press OK. Press Cancel to ignore.', newDateString)
 			newDateString = originalDateString
 			if (resultDateString) {
@@ -46,10 +44,11 @@ async function updatePhotoMetadataIfNeededFor({ entry }) {
 				}
 			}
 		}
-		return entry.get('data').set('date', newDateString).set('location', dataLocationString)
+		entry.data.date = newDateString
+		entry.data.location = dataLocationString
 	}
 
-	return entry.get('data')
+	return entry
 }
 
 CMS.registerEventListener({
