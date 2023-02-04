@@ -9,8 +9,8 @@ function getCollectionMatterByFile(name: string) {
 	if (!fs.existsSync(postDir)) {
 		return []
 	}
-	return fs.
-		readdirSync(postDir)
+	return fs
+		.readdirSync(postDir)
 		.map(file => {
 			const filePath = path.join(postDir, file)
 			const src = fs.readFileSync(filePath, 'utf-8')

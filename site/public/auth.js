@@ -1,3 +1,5 @@
+/* globals netlifyIdentity */
+
 const netlifyIdentity = window.netlifyIdentity
 
 if (netlifyIdentity != null) {

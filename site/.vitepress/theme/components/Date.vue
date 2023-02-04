@@ -1,5 +1,7 @@
 <template>
-<time :datetime="new Date(date.time).toISOString()" class="inline-block italic">{{ date.string }}</time>
+<time :datetime="new Date(date.time).toISOString()" class="inline-block italic">
+	{{ date.string }}
+</time>
 </template>
 
 <script setup lang="ts">
