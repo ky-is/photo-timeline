@@ -5,8 +5,9 @@ import type { DateData, EventData, PersonData, PhotoData } from './collections.j
 
 function getCollectionMatterByFile(name: string) {
 	// console.log(name) //SAMPLE
-	const postDir = path.resolve(`../${name}`)
+	const postDir = path.resolve(`site/${name}`)
 	if (!fs.existsSync(postDir)) {
+		console.error('ERR Collection DNE', name)
 		return []
 	}
 	return fs
