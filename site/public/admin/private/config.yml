@@ -30,7 +30,7 @@ collections:
     identifier_field: title
     fields:
       - { label: "Title", name: "title", widget: "string", hint: "Use sentence case. Must be unique across all photos." }
-      - { label: "Image", name: "image", widget: "image" }
+      - { label: "Image", name: "image", widget: "image", media_library: { config: { max_file_size: 0 } } }
       - { label: "Event", name: "event", widget: "relation", collection: "event", value_field: "title", search_fields: ["title"], display_fields: ["title", "date_start"], required: false, hint: "Events are photos that are grouped and highlighted on the timeline. Create a new Event first if it doesn't exist." }
       - { label: "Photographer", name: "photographer", widget: "relation", collection: "person", value_field: "name", search_fields: ["name"], required: false, hint: "There must be an existing Person entry for the name you wish to enter." }
       - { label: "People in Photo", name: "subjects", widget: "relation", collection: "person", multiple: true, value_field: "name", search_fields: ["name"], required: false, hint: "There must be an existing Person entry for each name you wish to enter." }

@@ -6,11 +6,11 @@ async function updatePhotoMetadataIfNeededFor({ entry }) {
 	if (entry.collection === 'person') {
 		const birthDate = entry.data.date_birth
 		if (birthDate) {
-			entry.data.date_birth = birthDate.toISOString().split('T')[0] + 'T00:00:00'
+			entry.data.date_birth = new Date(birthDate).toISOString().split('T')[0] + 'T00:00:00'
 		}
 	} else if (entry.collection === 'photo') {
 		const data = entry.data
-		const originalDateString = data.date ? data.date.toISOString() : null
+		const originalDateString = data.date ? new Date(data.date).toISOString() : null
 		let newDateString = originalDateString
 		let dataLocationString = data.location
 		const needsDate = !originalDateString
@@ -48,7 +48,7 @@ async function updatePhotoMetadataIfNeededFor({ entry }) {
 		entry.data.location = dataLocationString
 	}
 
-	return entry
+	return entry.data
 }
 
 CMS.registerEventListener({
